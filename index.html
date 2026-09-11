@@ -2,57 +2,656 @@
 <html>
 
 <head>
+    <script>
+        // Applied before first paint so returning visitors don't see a flash
+        // of the wrong theme. Defaults to "light" for first-time visitors.
+        (function () {
+            try {
+                var t = localStorage.getItem('dbarranda-theme') || 'light';
+                if (t === 'dark' || t === 'light') {
+                    document.documentElement.setAttribute('data-theme', t);
+                }
+            } catch (e) {}
+        })();
+    </script>
     <title> Daniela Barranda - Online Portfolio </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="/IMAGES/heart.svg">
+    <link rel="icon" type="image/svg+xml" href="images/heart.svg">
     <link rel="stylesheet" href="style.css">
-    <meta name="1st Seat Work in CCIT102" content="Basic HTML">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
 
-    <div class="menu">
-        <div class="logo">
-            <p><b> DBARRANDA </b></p>
+    <!-- ============================================
+         SIDEBAR (desktop navigation)
+         ============================================ -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <p><b>DBARRANDA</b></p>
+            <button type="button" class="sidebar-close-btn" onclick="closeMobileMenu()" aria-label="Close menu">&times;</button>
         </div>
 
-        <ul>
-            <li><a href="index.html" class="active"> HOME </a></li>
-            <li><a href="ABOUT.html"> ABOUT </a></li>
-            <li><a href="PROJECTS.html"> PROJECTS </a></li>
-            <li><a href="CONTACT.html"> CONTACT </a></li>
-        </ul>
-    </div>
+        <nav class="sidebar-nav">
+            <a href="#home" class="sidebar-link" data-section="home">
+                <i class="fa fa-home"></i><span>Home</span>
+            </a>
 
-    <div class="hero">
-        <div class="hero-img">
-            <img src="Image 3.png" alt="This is a picture of Dani.">
-        </div>
-
-        <div class="hero-text">
-            <h1>Hello, World!</h1>
-            <p class="hero-desc">
-                I am <b>Daniela Nicole T. Barranda</b> and you can call me <i>Dani</i>.
-                A 4th year student from <b>FAITH Colleges</b>, pursuing a degree in
-                <b><i>Bachelor of Science in Information Technology.</i></b>
-            </p>
-            <div class="hero-buttons">
-                <a href="ABOUT.html" class="hero-btn">Get to know more about me</a>
-                <a href="/IMAGES/CV.pdf" class="resume-btn" download>Download My Resume</a>
+            <div class="sidebar-group" id="sidebar-about-group">
+                <a href="#about" class="sidebar-link" data-section="about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+                <div class="sidebar-subnav" id="sidebar-about-subnav">
+                    <a href="#education">Education</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#certifications">Certifications</a>
+                    <a href="#hobbies">Hobbies</a>
+                </div>
             </div>
+
+            <a href="#projects" class="sidebar-link" data-section="projects">
+                <i class="fa fa-folder-open"></i><span>Projects</span>
+            </a>
+            <a href="#contact" class="sidebar-link" data-section="contact">
+                <i class="fa fa-envelope"></i><span>Contact</span>
+            </a>
+
+            <div class="theme-toggle" role="group" aria-label="Theme">
+                <button type="button" class="theme-btn" data-theme-choice="system" aria-label="Match system theme"><i class="fa fa-desktop"></i></button>
+                <button type="button" class="theme-btn" data-theme-choice="light" aria-label="Light theme"><i class="fa fa-sun-o"></i></button>
+                <button type="button" class="theme-btn" data-theme-choice="dark" aria-label="Dark theme"><i class="fa fa-moon-o"></i></button>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="documents/CV.pdf" class="sidebar-resume-btn" download>Download CV</a>
+            <p class="sidebar-contact-note">
+                For inquiries, reach me at<br>
+                <a href="mailto:barrandadaniela@gmail.com">barrandadaniela@gmail.com</a>
+            </p>
+        </div>
+    </aside>
+
+    <!-- ============================================
+         MOBILE TOP BAR (mobile navigation trigger)
+         ============================================ -->
+    <div class="mobile-topbar">
+        <div class="mobile-topbar-logo">
+            <p><b>DBARRANDA</b></p>
+        </div>
+        <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="mobile-menu-backdrop" onclick="closeMobileMenu()"></div>
+
+    <main class="page-content">
+
+        <!-- ============================================
+             HOME
+             ============================================ -->
+        <section class="hero" id="home">
+            <div class="hero-img">
+                <img src="images/Image 5.jpg" alt="Daniela Barranda">
+            </div>
+
+            <div class="hero-text">
+                <h1>Daniela Barranda</h1>
+                <p class="hero-tagline">4th year IT student at FAITH Colleges — building full-stack web apps and exploring UI/UX design.</p>
+                <p class="hero-desc">Hello, I am Daniela Nicole Barranda, pursuing a Bachelor's Degree in Information Technology. I am eager to secure a role with a reputable organization to broaden my knowledge, gain experience, and earn. I am dedicated to developing the skills needed for such a position, focusing on professional growth and making significant contributions to the organization.</p>
+                <p class="address">
+                    Batangas, Philippines<br> Santiago Malvar
+                </p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/danielanicole.barranda" target="_blank" rel="noopener">facebook ↗</a>
+                    <a href="https://www.instagram.com/_dbarranda/?hl=en" target="_blank" rel="noopener">instagram ↗</a>
+                    <a href="https://github.com/DanielaBarranda" target="_blank" rel="noopener">github ↗</a>
+                    <a href="https://www.linkedin.com/in/daniela-nicole-barranda-4a1281239/" target="_blank" rel="noopener">linkedin ↗</a>
+                    <a href="mailto:barrandadaniela@gmail.com">email ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             ABOUT
+             ============================================ -->
+        <section class="about-wrapper" id="about">
+
+            <nav class="about-jumpnav">
+                <a href="#education">Education</a>
+                <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
+                <a href="#certifications">Certifications</a>
+                <a href="#hobbies">Hobbies</a>
+            </nav>
+
+            <section class="edu-section" id="education">
+                <div class="edu-img">
+                    <img src="images/Image 2.png" alt="College Picture">
+                </div>
+                <div class="edu-text">
+                    <h2>Education</h2>
+                    <p class="edu-label">College</p>
+                    <p class="edu-desc">
+                        <b>First Asia Institute of Technology and Humanities (FAITH)</b><br>
+                        Tanauan City, Batangas<br>
+                        <b>College of Computing and Information Technology</b><br>
+                        <b>Bachelor of Science in Information Technology</b><br>
+                        2023 - Present<br>
+                        Consistent Lister
+                    </p>
+                </div>
+            </section>
+
+            <section class="edu-section reverse">
+                <div class="edu-img">
+                    <img src="images/Image 4.png" alt="SHS Picture">
+                </div>
+                <div class="edu-text">
+                    <h2>Education</h2>
+                    <p class="edu-label">Senior High School</p>
+                    <p class="edu-desc">
+                        <b>First Asia Institute of Technology and Humanities</b><br>
+                        <b>FIDELIS SENIOR HIGH SCHOOL</b><br>
+                        Tanauan City, Batangas<br>
+                        <b>Technical - Vocational - Livelihood Track:</b><br>
+                        <b>Information and Communications Technology Strand</b><br>
+                        2021-2023<br>
+                        Class Secretary (2021-2022)<br>
+                        Class President (2022-2023)<br>
+                        With Honors (2021-2023)
+                    </p>
+                </div>
+            </section>
+
+            <section class="skills-section" id="skills">
+                <h2>Technical Skills</h2>
+                <div class="skills-grid">
+                    <ul>
+                        <li>Computer Hardware & Software Troubleshooting</li>
+                        <li>System Testing, Bug Identification & Fixing</li>
+                        <li>Version Control & Collaboration (Git, GitHub)</li>
+                        <li>UI/UX Design & Prototyping (Figma)</li>
+                        <li>Microsoft Office Suite & Google Workspace</li>
+                        <li>Web Development (HTML, CSS, JavaScript)</li>
+                        <li>Backend Development (ASP.NET, C#)</li>
+                    </ul>
+                    <ul>
+                        <li>Database Management (Microsoft SQL, MariaDB, Supabase, AWS:EC2)</li>
+                        <li>Cloud Deployment (Microsoft Azure, Vercel)</li>
+                        <li>Basic Java and C++</li>
+                        <li>AI-Assisted Development (ChatGPT, Claude)</li>
+                        <li>Canva</li>
+                        <li>Capcut</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="experience-section" id="experience">
+                <h2>Professional Experience</h2>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>Digital Literacy Volunteer</h3>
+                        <span class="exp-date">Aug 2023</span>
+                    </div>
+                    <p class="exp-org">CLICK Program, FAITH Colleges — Tanauan City, Batangas</p>
+                    <ul>
+                        <li>Assisted barangay senior workers from Darasa, Tanauan, Batangas to use Microsoft Word, PowerPoint, and Gmail, translating technical concepts into accessible, practical instruction.</li>
+                        <li>Demonstrated patience, communication, and adaptability when working with non-technical users — skills directly applicable to team collaboration and task updates in a professional environment.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-header">
+                        <h3>IT Support Intern (Work Immersion)</h3>
+                        <span class="exp-date">Jan 2023 - Feb 2023</span>
+                    </div>
+                    <p class="exp-org">MIS Department, FAITH Colleges — Tanauan City, Batangas</p>
+                    <ul>
+                        <li>Completed 160 hours of hands-on IT support, troubleshooting hardware and software issues across classrooms, laboratories, and administrative offices — improving equipment uptime and reducing disruptions.</li>
+                        <li>Diagnosed and resolved system errors, software conflicts, and connectivity issues in computer labs and staff computers, applying systematic bug identification and fix processes.</li>
+                        <li>Assisted in preventive maintenance, computer assembly, Audio-Visual setup, and network troubleshooting — ensuring systems were ready and functional for daily school operations.</li>
+                        <li>Collaborated with the MIS team to prioritize and act on support requests during peak activity periods such as school events and examinations.</li>
+                        <li>Received Certificate of Completion.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="cert-section" id="certifications">
+                <div class="cert-section-head">
+                    <h2>Certifications</h2>
+                    <button type="button" class="cert-see-all-btn" onclick="toggleAllCertifications(this)">View All Certifications ↓</button>
+                </div>
+                <div class="cert-list">
+
+                    <div class="cert-row">
+                        <a href="documents/CALABARZON Cybersecurity Caravan.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Attendance PDF">
+                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="cert-row-body">
+                            <div class="cert-row-head">
+                                <h3>Certificate of Attendance</h3>
+                                <a href="documents/CALABARZON Cybersecurity Caravan.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+                            </div>
+                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
+                            <p class="cert-row-sub">CALABARZON Cybersecurity Caravan</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-row">
+                        <a href="documents/DSDAP Caravan.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Participation, DSDAP Caravan PDF">
+                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="cert-row-body">
+                            <div class="cert-row-head">
+                                <h3>Certificate of Participation</h3>
+                                <a href="documents/DSDAP Caravan.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+                            </div>
+                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
+                            <p class="cert-row-sub">DSDAP Caravan</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-row">
+                        <a href="documents/EGOV Orientation.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Participation, EGOVPh Orientation PDF">
+                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="cert-row-body">
+                            <div class="cert-row-head">
+                                <h3>Certificate of Participation</h3>
+                                <a href="documents/EGOV Orientation.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+                            </div>
+                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
+                            <p class="cert-row-sub">EGOVPh Orientation</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-row cert-extra">
+                        <div class="cert-row-thumb">
+                            <img src="images/HTML-Solo Learn.jfif" alt="HTML Certificate — SoloLearn">
+                        </div>
+                        <div class="cert-row-body">
+                            <div class="cert-row-head">
+                                <h3>HTML Certificate</h3>
+                            </div>
+                            <p class="cert-row-badge">SoloLearn · Self-directed</p>
+                            <p class="cert-row-sub">Mobile App — Web Development Learning</p>
+                        </div>
+                    </div>
+
+                    <div class="cert-row cert-extra">
+                        <div class="cert-row-thumb">
+                            <img src="images/Work Immersion.jfif" alt="Certificate of Completion — IT Support Intern Work Immersion">
+                        </div>
+                        <div class="cert-row-body">
+                            <div class="cert-row-head">
+                                <h3>Certificate of Completion</h3>
+                            </div>
+                            <p class="cert-row-badge">FAITH Colleges MIS Dept. · Feb 2023</p>
+                            <p class="cert-row-sub">IT Support Intern — Work Immersion</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="hobbies-section" id="hobbies">
+                <h2>Hobbies</h2>
+                <p class="hobdes">
+                    Outside of coursework and projects, I enjoy documenting everyday moments through photography
+                    and videography — a habit that doubles as hands-on practice with the same editing tools I use
+                    professionally, Canva and CapCut. I like refining raw footage into something clean and
+                    presentable before sharing it, which keeps my eye for detail sharp.
+                </p>
+                <p class="hobdec2">
+                    When I'm not creating, I recharge with a good show, an iced coffee, or catching up with close
+                    friends and family over food — small rituals that help me stay balanced and bring fresh energy
+                    back to my work.
+                </p>
+
+                <div class="hobby-gallery">
+                    <div class="hobby-track">
+                        <div class="hobby-box">
+                            <img src="images/a.jpg">
+                        </div>
+                        <div class="hobby-box">
+                            <img src="images/b.png">
+                        </div>
+                        <div class="hobby-box">
+                            <img src="images/c.jpg">
+                        </div>
+                        <div class="hobby-box">
+                            <img src="images/d.jpg">
+                        </div>
+                        <!-- duplicated for a seamless looping scroll -->
+                        <div class="hobby-box" aria-hidden="true">
+                            <img src="images/a.jpg" alt="">
+                        </div>
+                        <div class="hobby-box" aria-hidden="true">
+                            <img src="images/b.png" alt="">
+                        </div>
+                        <div class="hobby-box" aria-hidden="true">
+                            <img src="images/c.jpg" alt="">
+                        </div>
+                        <div class="hobby-box" aria-hidden="true">
+                            <img src="images/d.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- ============================================
+             PROJECTS
+             ============================================ -->
+        <section class="Projects-page" id="projects">
+            <div class="projects">
+                <p class="proj-eyebrow">PORTFOLIO</p>
+                <h2 id="proj">Projects</h2>
+                <p class="projdes">
+                    A collection of projects I've contributed to — spanning full-stack web applications, database-driven systems, and UI/UX design.
+                    Throughout these projects, I've taken on leadership and development roles, serving as Team Lead and Lead Developer while helping guide the team and
+                    oversee the technical implementation.
+                </p>
+            </div>
+
+            <div class="proj-container">
+                <div class="proj-row">
+                    <div class="proj-row-thumb">
+                        <img src="images/Astra-1.png" alt="AstraMentoring dashboard">
+                    </div>
+                    <div class="proj-row-body">
+                        <div class="proj-row-head">
+                            <h3>AstraMentoring</h3>
+                        </div>
+                        <p class="proj-row-role">Capstone Project · Team Lead · 2026 · Ongoing</p>
+                        <p class="proj-row-text">Capstone project for FAITH Colleges that centralizes mentoring operations through a web-based Mentoring Management System. It features role-based dashboards, session scheduling, and dynamic QR-code attendance monitoring to streamline and improve the management of mentoring activities.</p>
+                        <p class="proj-row-tags">ASP.NET · Microsoft SQL Server · HTML/CSS/JS · Figma · MOA</p>
+                    </div>
+                </div>
+
+                <div class="proj-row">
+                    <div class="proj-row-thumb">
+                        <img src="images/Star-1.png" alt="StarQueen PMTS admin dashboard">
+                    </div>
+                    <div class="proj-row-body">
+                        <div class="proj-row-head">
+                            <h3>StarQueen PMTS</h3>
+                            <a href="https://starqueen-web.vercel.app/ADMIN/HTML/login.html" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
+                        </div>
+                        <p class="proj-row-role">Team Lead · 2026 · Deployed</p>
+                        <p class="proj-row-text">Preventive Maintenance and Tracking System developed for a private organization, Starqueen Company in San Pedro, Darasa, designed to monitor vehicle maintenance, track parts and expenses, and provide automated alerts for overdue maintenance requirements.</p>
+                        <p class="proj-row-tags">HTML/CSS/JS · ASP.NET · C# · Azure · Microsoft SQL Server · Vercel · MOA</p>
+                    </div>
+                </div>
+
+                <div class="proj-row">
+                    <div class="proj-row-thumb">
+                        <img src="images/discover.png" alt="CineMax Discover page — movie catalog">
+                    </div>
+                    <div class="proj-row-body">
+                        <div class="proj-row-head">
+                            <h3>CineMax</h3>
+                            <a href="https://cinemax-omega-sepia.vercel.app/home/home.html" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
+                        </div>
+                        <p class="proj-row-role">Team Project · 2025 · Deployed</p>
+                        <p class="proj-row-text">Interactive movie discovery website that recommends films based on the user's selected mood and current weather conditions. It integrates multiple APIs to provide movie information, trailers, and links to platforms where users can watch the full movie, while the website itself serves as a preview and discovery platform.</p>
+                        <p class="proj-row-tags">HTML/CSS/JS · Figma · Vercel</p>
+                    </div>
+                </div>
+
+                <!-- NewtonIQ -->
+                <div class="proj-row">
+                    <div class="proj-row-thumb proj-row-thumb-video" onclick="openProjectModal('newtoniq-modal')" role="button" tabindex="0" aria-label="Play NewtonIQ preview video">
+                        <video class="proj-row-video-el" autoplay muted loop playsinline>
+                            <source src="videos/IQ.mp4" type="video/mp4">
+                        </video>
+                        <span class="proj-row-play-btn">▶</span>
+                    </div>
+                    <div class="proj-row-body">
+                        <div class="proj-row-head">
+                            <h3>NewtonIQ</h3>
+                            <a href="https://newtons-iq.vercel.app" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
+                        </div>
+                        <p class="proj-row-role">Team Lead · 2025 · Deployed</p>
+                        <p class="proj-row-text">Interactive web-based calculator for Impulse and Momentum that provides step-by-step solutions, tutorials, and lessons to help users understand the formulas, computation process, and how each answer is derived.</p>
+                        <p class="proj-row-tags">HTML/CSS/JS</p>
+                    </div>
+                </div>
+
+                <!-- Kraby Kitchen -->
+                <div class="proj-row">
+                    <div class="proj-row-thumb proj-row-thumb-video" onclick="openProjectModal('kraby-modal')" role="button" tabindex="0" aria-label="Play Kraby Kitchen preview video">
+                        <video class="proj-row-video-el" autoplay muted loop playsinline>
+                            <source src="videos/Kraby.mov" type="video/mp4">
+                        </video>
+                        <span class="proj-row-play-btn">▶</span>
+                    </div>
+                    <div class="proj-row-body">
+                        <div class="proj-row-head">
+                            <h3>Kraby Kitchen</h3>
+                        </div>
+                        <p class="proj-row-role">Team Lead · 2024 · LocalHost Project</p>
+                        <p class="proj-row-text">Full-stack Restaurant Order Management System that uses CRUD functionalities and database integration to manage menu items, customer orders, and related data across browsing, order placement, and management workflows.</p>
+                        <p class="proj-row-tags">ASP.NET · MariaDB</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================
+             CONTACT
+             ============================================ -->
+        <section class="contact-page" id="contact">
+            <div class="contact-header">
+                <h1 class="description">Contact Me</h1>
+                <p class="note">For any queries, feel free to reach out through my socials, or leave a comment below.</p>
+            </div>
+
+            <div class="contact-main">
+                <div class="comments-wrapper">
+                    <h2>Leave a Comment</h2>
+                    <p class="comments-subtitle">Visiting the site? Drop a note below — I read every one.</p>
+
+                    <form id="comment-form" class="comment-form">
+                        <div class="comment-form-row">
+                            <input type="text" id="comment-name" name="name" placeholder="Your name" maxlength="60" required>
+                        </div>
+                        <div class="comment-form-row">
+                            <textarea id="comment-message" name="message" rows="3" placeholder="Write your comment..." maxlength="500" required></textarea>
+                        </div>
+                        <div class="comment-form-actions">
+                            <button type="submit" class="comment-submit-btn">Post Comment</button>
+                            <span id="comment-form-status" class="comment-form-status"></span>
+                        </div>
+                    </form>
+
+                    <div id="comments-list" class="comments-list">
+                        <p class="comments-loading">Loading comments…</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="proj-modal-overlay" id="newtoniq-modal" onclick="closeProjectModal(event, 'newtoniq-modal')">
+        <div class="proj-modal-box" onclick="event.stopPropagation()">
+            <button class="proj-modal-close" onclick="closeProjectModal(null, 'newtoniq-modal')" aria-label="Close preview">&times;</button>
+            <video class="proj-modal-video" controls>
+                <source src="videos/IQ.mp4" type="video/mp4">
+                Your browser doesn't support embedded videos.
+            </video>
+            <h3 class="proj-modal-title">NewtonIQ — Preview</h3>
         </div>
     </div>
 
-    <footer>
-        Copyright &copy;
-        <script>
-            document.write(new Date().getFullYear())
-        </script> Daniela Barranda
-    </footer>
+    <div class="proj-modal-overlay" id="kraby-modal" onclick="closeProjectModal(event, 'kraby-modal')">
+        <div class="proj-modal-box" onclick="event.stopPropagation()">
+            <button class="proj-modal-close" onclick="closeProjectModal(null, 'kraby-modal')" aria-label="Close preview">&times;</button>
+            <video class="proj-modal-video" controls>
+                <source src="videos/Kraby.mov" type="video/mp4">
+                Your browser doesn't support embedded videos.
+            </video>
+            <h3 class="proj-modal-title">Kraby Kitchen — Preview</h3>
+        </div>
+    </div>
+
+    <script>
+        // ---- Certifications: show a preview, reveal the rest on demand ----
+        function toggleAllCertifications(btn) {
+            const list = document.querySelector('.cert-list');
+            const expanded = list.classList.toggle('expanded');
+            btn.textContent = expanded ? 'Show Fewer Certifications ↑' : 'View All Certifications ↓';
+        }
+
+        // ---- Project preview modals ----
+        function openProjectModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('active');
+            const video = modal.querySelector('video');
+            if (video) video.play();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectModal(event, id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            const video = modal.querySelector('video');
+            if (video) { video.pause(); video.currentTime = 0; }
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.proj-modal-overlay.active').forEach(m => {
+                    closeProjectModal(null, m.id);
+                });
+            }
+        });
+
+        // Picks whichever section currently fills the most visible area in the
+        // viewport — robust to sections much shorter or taller than the screen,
+        // unlike a fixed "N px from the top" line which gets stuck on short
+        // sections once a taller one starts dominating the view.
+        function getDominantSection(sections) {
+            const viewportHeight = window.innerHeight;
+            let best = null;
+            let bestVisible = -Infinity;
+            sections.forEach(section => {
+                if (!section) return;
+                const rect = section.getBoundingClientRect();
+                const visible = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+                if (visible > bestVisible) {
+                    bestVisible = visible;
+                    best = section;
+                }
+            });
+            return best;
+        }
+
+        // ---- About sub-nav: highlight current subsection while scrolling ----
+        const jumpLinks = document.querySelectorAll('.about-jumpnav a');
+        const subSections = [...jumpLinks].map(link =>
+            document.querySelector(link.getAttribute('href'))
+        );
+
+        function highlightCurrentSubsection() {
+            if (!subSections.length) return;
+            const current = getDominantSection(subSections);
+            const currentId = current ? current.id : subSections[0].id;
+
+            jumpLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+            });
+
+            document.querySelectorAll('.sidebar-subnav a').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+            });
+        }
+
+        // ---- Sidebar: highlight current top-level section ----
+        const navSections = ['home', 'about', 'projects', 'contact'].map(id => document.getElementById(id));
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const aboutJumpnav = document.querySelector('.about-jumpnav');
+
+        function highlightCurrentSection() {
+            const current = getDominantSection(navSections);
+            const currentId = current ? current.id : navSections[0].id;
+
+            sidebarLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-section') === currentId);
+            });
+
+            aboutJumpnav.classList.toggle('visible', currentId === 'about');
+        }
+
+        // ---- Mobile hamburger menu ----
+        function toggleMobileMenu() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.mobile-menu-backdrop').classList.toggle('open');
+            document.body.classList.toggle('menu-open');
+        }
+
+        function closeMobileMenu() {
+            document.querySelector('.sidebar').classList.remove('open');
+            document.querySelector('.mobile-menu-backdrop').classList.remove('open');
+            document.body.classList.remove('menu-open');
+        }
+
+        document.querySelectorAll('.sidebar-nav a, .sidebar-footer a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        function onScroll() {
+            highlightCurrentSection();
+            highlightCurrentSubsection();
+        }
+
+        window.addEventListener('scroll', onScroll);
+        onScroll();
+
+        // ---- Theme toggle (system / light / dark) ----
+        const THEME_KEY = 'dbarranda-theme';
+        const themeButtons = document.querySelectorAll('.theme-btn');
+
+        function applyTheme(choice) {
+            if (choice === 'dark' || choice === 'light') {
+                document.documentElement.setAttribute('data-theme', choice);
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+            themeButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-theme-choice') === choice);
+            });
+            localStorage.setItem(THEME_KEY, choice);
+        }
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => applyTheme(btn.getAttribute('data-theme-choice')));
+        });
+
+        applyTheme(localStorage.getItem(THEME_KEY) || 'light');
+    </script>
+
+    <script src="comments.js" defer></script>
 
 </body>
 
