@@ -1,0 +1,9 @@
+# Dependencies (regenerate with `npm install`)
+node_modules/
+
+# Runtime comment data — contains each comment's private ownerToken
+# (used to authorize edit/delete). Do not publish.
+comments-api/comments.json
+
+# Logs
+*.log
