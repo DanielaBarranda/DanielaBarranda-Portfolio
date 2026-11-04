@@ -441,6 +441,16 @@ body {
     background-color: var(--rose-deep);
 }
 
+.hero-btn-outline {
+    background-color: transparent;
+    color: var(--rose-deep);
+    box-shadow: inset 0 0 0 1.5px var(--rose);
+}
+
+.hero-btn-outline:hover {
+    background-color: var(--rose-pale);
+}
+
 /* ============================================
    SECTION HEADINGS (shared signature: small rose
    mark + eyebrow-style label instead of underline)
@@ -776,210 +786,65 @@ body {
 
 
 /* ============================================
-   COMMENTS (CRUD)
+   CONTACT CARDS
    ============================================ */
 
-.comments-wrapper {
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 760px;
+}
+
+.contact-card {
     display: flex;
     flex-direction: column;
-}
-
-.comments-wrapper h2 {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 24px;
-    color: var(--ink);
-    margin-bottom: 6px;
-}
-
-.comments-subtitle {
-    color: var(--ink-muted);
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.comment-form {
+    gap: 4px;
+    padding: 22px 22px 20px 22px;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: 14px;
-    margin-bottom: 14px;
-}
-
-.comment-form-row {
-    margin-bottom: 8px;
-}
-
-.comment-form input,
-.comment-form textarea {
-    width: 100%;
-    font-family: var(--font-body);
-    font-size: 14px;
+    text-decoration: none;
     color: var(--ink);
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 5px;
-    padding: 8px 12px;
-    resize: vertical;
     transition: 0.2s ease;
 }
 
-.comment-form input:focus,
-.comment-form textarea:focus {
-    outline: none;
+.contact-card:hover,
+.contact-card:focus-visible {
     border-color: var(--rose);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
-.comment-form-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.comment-submit-btn {
-    background: var(--rose);
-    color: #fff;
-    border: none;
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.3px;
-    padding: 11px 24px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.comment-submit-btn:hover {
-    background: var(--rose-deep);
-}
-
-.comment-submit-btn:disabled {
-    opacity: 0.6;
-    cursor: default;
-}
-
-.comment-form-status {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--ink-muted);
-}
-
-.comment-form-status-success {
-    color: var(--rose-deep);
-}
-
-.comment-form-status-error {
-    color: #b3261e;
-}
-
-.comments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 420px;
-    overflow-y: auto;
-    padding-right: 8px;
-    margin-right: -8px;
-}
-
-.comments-loading,
-.comments-empty,
-.comments-error {
-    color: var(--ink-muted);
-    font-size: 14px;
-    text-align: center;
-    padding: 20px 0;
-}
-
-.comment-card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
-    flex: 0 0 auto;
-}
-
-.comment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 6px;
-    flex-wrap: wrap;
-}
-
-.comment-name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--ink);
-}
-
-.comment-time {
-    font-size: 11.5px;
-    color: var(--ink-muted);
-    letter-spacing: 0.2px;
-}
-
-.comment-edited {
-    font-style: italic;
-}
-
-.comment-message {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ink-muted);
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-.comment-edit-textarea {
-    width: 100%;
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--ink);
-    border: 1px solid var(--rose);
-    border-radius: 5px;
-    padding: 8px 10px;
-    resize: vertical;
+.contact-card i {
+    font-size: 20px;
+    color: var(--rose);
     margin-bottom: 8px;
 }
 
-.comment-owner-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.comment-action-btn {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--ink-muted);
-    font-family: var(--font-body);
-    font-size: 11.5px;
+.contact-card-label {
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.2s ease;
+    color: var(--ink-muted);
 }
 
-.comment-action-btn:hover {
-    border-color: var(--rose);
-    color: var(--rose-deep);
+.contact-card-value {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: anywhere;
 }
 
-.comment-action-delete:hover {
-    border-color: #b3261e;
-    color: #b3261e;
-}
-
-.comment-save-btn {
-    border-color: var(--rose);
-    color: var(--rose-deep);
+.contact-location {
+    margin-top: 28px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--ink-muted);
 }
 
 
@@ -1470,13 +1335,14 @@ a.cert-row-thumb:hover {
         right: auto;
         width: min(300px, 85vw);
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        box-shadow: var(--shadow-lg);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: none;
         z-index: 20;
     }
 
     .sidebar.open {
         transform: translateX(0);
+        box-shadow: var(--shadow-lg);
     }
 
     .sidebar-close-btn {
@@ -1572,16 +1438,12 @@ a.cert-row-thumb:hover {
         margin-right: auto;
     }
 
-    .comments-wrapper h2,
-    .comments-subtitle {
-        text-align: center;
+    .contact-grid {
+        margin: 0 auto;
     }
 
-    .comments-list {
-        max-height: none;
-        overflow-y: visible;
-        padding-right: 0;
-        margin-right: 0;
+    .contact-location {
+        text-align: center;
     }
 
     .social-links {
@@ -1631,6 +1493,10 @@ a.cert-row-thumb:hover {
     .hero-btn {
         text-align: center;
         width: 100%;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
     }
 
     .about-wrapper,

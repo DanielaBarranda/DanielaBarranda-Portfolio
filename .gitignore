@@ -1,9 +1,11 @@
-# Dependencies (regenerate with `npm install`)
+# Dependencies
 node_modules/
 
-# Runtime comment data — contains each comment's private ownerToken
-# (used to authorize edit/delete). Do not publish.
-comments-api/comments.json
+# Vercel CLI local project link
+.vercel/
+
+# Generated knowledge-graph output (local tooling)
+graphify-out/
 
 # Logs
 *.log
