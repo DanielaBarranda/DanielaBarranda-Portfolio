@@ -12,6 +12,14 @@
                     document.documentElement.setAttribute('data-theme', t);
                 }
             } catch (e) {}
+            // Desktop sidebar: the visitor's saved choice, else collapsed on
+            // narrower laptop screens so the content gets more room.
+            try {
+                var s = localStorage.getItem('dbarranda-sidebar');
+                if (s === 'collapsed' || (s === null && window.innerWidth < 1100)) {
+                    document.documentElement.classList.add('sidebar-collapsed');
+                }
+            } catch (e) {}
         })();
     </script>
     <meta charset="UTF-8">
@@ -40,48 +48,54 @@
 <body>
 
     <!-- ============================================
-         SIDEBAR (desktop navigation)
+         SIDEBAR (desktop navigation, mobile drawer)
          ============================================ -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
-            <p><b>DBARRANDA</b></p>
+            <p class="logo"><b class="logo-text">DBARRANDA</b></p>
+            <button type="button" class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" aria-controls="sidebar" aria-expanded="true" aria-label="Collapse sidebar" data-label="Expand sidebar">
+                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            </button>
             <button type="button" class="sidebar-close-btn" onclick="closeMobileMenu()" aria-label="Close menu">&times;</button>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="#home" class="sidebar-link" data-section="home">
-                <i class="fa fa-home"></i><span>Home</span>
+        <nav class="sidebar-nav" aria-label="Main">
+            <a href="#home" class="sidebar-link" data-section="home" data-label="Home">
+                <i class="fa fa-home" aria-hidden="true"></i><span class="sidebar-label">Home</span>
             </a>
 
-            <div class="sidebar-group" id="sidebar-about-group">
-                <a href="#about" class="sidebar-link" data-section="about">
-                    <i class="fa fa-user"></i><span>About</span>
+            <a href="#projects" class="sidebar-link" data-section="projects" data-label="Projects">
+                <i class="fa fa-folder-open" aria-hidden="true"></i><span class="sidebar-label">Projects</span>
+            </a>
+
+            <div class="sidebar-group">
+                <a href="#about" class="sidebar-link" data-section="about" data-label="About">
+                    <i class="fa fa-user" aria-hidden="true"></i><span class="sidebar-label">About</span>
                 </a>
-                <div class="sidebar-subnav" id="sidebar-about-subnav">
-                    <a href="#education">Education</a>
-                    <a href="#skills">Skills</a>
+                <div class="sidebar-subnav">
                     <a href="#experience">Experience</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#education">Education</a>
                     <a href="#certifications">Certifications</a>
                     <a href="#hobbies">Hobbies</a>
                 </div>
             </div>
 
-            <a href="#projects" class="sidebar-link" data-section="projects">
-                <i class="fa fa-folder-open"></i><span>Projects</span>
-            </a>
-            <a href="#contact" class="sidebar-link" data-section="contact">
-                <i class="fa fa-envelope"></i><span>Contact</span>
+            <a href="#contact" class="sidebar-link" data-section="contact" data-label="Contact">
+                <i class="fa fa-envelope" aria-hidden="true"></i><span class="sidebar-label">Contact</span>
             </a>
 
             <div class="theme-toggle" role="group" aria-label="Theme">
-                <button type="button" class="theme-btn" data-theme-choice="system" aria-label="Match system theme"><i class="fa fa-desktop"></i></button>
-                <button type="button" class="theme-btn" data-theme-choice="light" aria-label="Light theme"><i class="fa fa-sun-o"></i></button>
-                <button type="button" class="theme-btn" data-theme-choice="dark" aria-label="Dark theme"><i class="fa fa-moon-o"></i></button>
+                <button type="button" class="theme-btn" data-theme-choice="system" aria-label="Match system theme"><i class="fa fa-desktop" aria-hidden="true"></i></button>
+                <button type="button" class="theme-btn" data-theme-choice="light" aria-label="Light theme"><i class="fa fa-sun-o" aria-hidden="true"></i></button>
+                <button type="button" class="theme-btn" data-theme-choice="dark" aria-label="Dark theme"><i class="fa fa-moon-o" aria-hidden="true"></i></button>
             </div>
         </nav>
 
         <div class="sidebar-footer">
-            <a href="documents/CV.pdf" class="sidebar-resume-btn" download>Download CV</a>
+            <a href="documents/CV.pdf" class="btn btn-block sidebar-cv" download data-label="Download CV">
+                <i class="fa fa-download" aria-hidden="true"></i><span class="sidebar-label">Download CV</span>
+            </a>
             <p class="sidebar-contact-note">
                 For inquiries, reach me at<br>
                 <a href="mailto:barrandadaniela@gmail.com">barrandadaniela@gmail.com</a>
@@ -93,10 +107,8 @@
          MOBILE TOP BAR (mobile navigation trigger)
          ============================================ -->
     <div class="mobile-topbar">
-        <div class="mobile-topbar-logo">
-            <p><b>DBARRANDA</b></p>
-        </div>
-        <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open menu">
+        <p class="logo"><b>DBARRANDA</b></p>
+        <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
     </div>
@@ -114,100 +126,331 @@
             </div>
 
             <div class="hero-text">
+                <a href="#contact" class="hero-badge"><span class="hero-badge-dot" aria-hidden="true"></span>Available for OJT · Dec 1, 2026</a>
                 <h1>Daniela Barranda</h1>
                 <p class="hero-tagline">4th year IT student at FAITH Colleges — building full-stack web apps and exploring UI/UX design.</p>
-                <p class="hero-desc">Hi, I'm Daniela Nicole Barranda, a BS Information Technology student who enjoys turning real problems into working web applications. I've led teams that built a QR-based mentoring system for our college and a deployed maintenance tracker for a private company. I'm looking for an <b>OJT or junior role</b> where I can contribute to real projects, keep learning, and grow as a developer.</p>
-                <p class="address">
-                    Santiago, Malvar, Batangas, Philippines
-                </p>
+                <p class="hero-desc">I'm a BS Information Technology student with hands-on experience in web development and IT support. I've led teams on both school and client projects, from planning through deployment. I'm seeking an <b>OJT or junior role</b> where I can contribute and keep learning.</p>
+                <div class="hero-interests">
+                    <p class="eyebrow eyebrow-muted">Areas of interest</p>
+                    <ul class="chip-list">
+                        <li class="chip">IT Support</li><li class="chip">Web Development</li>
+                    </ul>
+                    <p class="hero-open">Open to any opportunity to learn and grow.</p>
+                </div>
+                <p class="hero-address">Santiago, Malvar, Batangas, Philippines</p>
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/daniela-nicole-barranda-4a1281239/" target="_blank" rel="noopener">linkedin ↗</a>
                     <a href="https://github.com/DanielaBarranda" target="_blank" rel="noopener">github ↗</a>
                     <a href="mailto:barrandadaniela@gmail.com">email ↗</a>
                 </div>
                 <div class="hero-buttons">
-                    <a href="#projects" class="hero-btn">View Projects</a>
-                    <a href="documents/CV.pdf" class="hero-btn hero-btn-outline" download>Download CV</a>
+                    <a href="#projects" class="btn">View Projects</a>
+                    <a href="documents/CV.pdf" class="btn btn-outline" download>Download CV</a>
                 </div>
             </div>
         </section>
 
         <!-- ============================================
+             PROJECTS
+             ============================================ -->
+        <section class="section projects-section" id="projects">
+            <header class="section-head">
+                <p class="eyebrow">Portfolio</p>
+                <h2 class="section-title section-title-lg">Projects</h2>
+                <p class="section-lead">
+                    Web, mobile, IoT, and desktop projects from school and real clients. I led six of them as Project Manager,
+                    Team Lead, or Project Lead, guiding the team while also building parts of the system myself.
+                </p>
+            </header>
+
+            <div class="project-filters" role="group" aria-label="Filter projects by category">
+                <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
+                <button type="button" class="filter-btn" data-filter="mobile" aria-pressed="false">Mobile</button>
+                <button type="button" class="filter-btn" data-filter="iot" aria-pressed="false">IoT</button>
+                <button type="button" class="filter-btn" data-filter="desktop" aria-pressed="false">Desktop</button>
+            </div>
+
+            <!-- Featured: latest project -->
+            <article class="featured-project" data-category="web">
+                <div class="featured-project-visual media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                     data-video="videos/pennywise.mp4" data-poster="images/pennywise-poster.webp" data-title="PennyWise — Demo"
+                     aria-label="Play PennyWise demo video">
+                    <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/pennywise-poster.webp" aria-hidden="true">
+                        <source src="videos/pennywise-thumb.mp4" type="video/mp4">
+                    </video>
+                    <span class="play-badge" aria-hidden="true">▶</span>
+                </div>
+                <div class="featured-project-body">
+                    <p class="eyebrow">Latest project · Web App</p>
+                    <h3 class="featured-project-title">PennyWise — Personal Budget Tracker</h3>
+                    <p class="project-meta">
+                        <span class="project-role">Developer</span>
+                        <span>Nov 2026</span>
+                        <span class="status status-live">Deployed</span>
+                    </p>
+                    <p class="media-row-text">Personal budget tracking web app that helps users monitor expenses, manage budgets, and track their finances. Built as a Progressive Web App so it can be installed on a phone or desktop, and deployed on AWS EC2.</p>
+                    <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                        <li class="chip">React</li><li class="chip">Vite</li><li class="chip">SQLite</li><li class="chip">AWS EC2</li><li class="chip">PWA</li>
+                    </ul>
+                    <div class="project-links">
+                        <a href="https://penny-wise.app/" target="_blank" rel="noopener" class="btn">Visit PennyWise ↗</a>
+                        <button type="button" class="btn btn-outline" onclick="openVideo(this)" data-video="videos/pennywise.mp4" data-poster="images/pennywise-poster.webp" data-title="PennyWise — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </div>
+            </article>
+
+            <div class="media-list project-list">
+                <article class="media-row media-row-project" data-category="web">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/astramentoring.mp4" data-poster="images/astramentoring-poster.webp" data-title="AstraMentoring — Demo"
+                         aria-label="Play AstraMentoring demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/astramentoring-poster.webp" aria-hidden="true">
+                            <source src="videos/astramentoring-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Capstone · Web App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">AstraMentoring</h3>
+                            <a href="https://astramentoring.live/" target="_blank" rel="noopener" class="text-link">View Project ↗</a>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Project Manager &amp; Technical Lead · team of 3</span>
+                            <span>2026</span>
+                            <span class="status status-live">Deployed</span>
+                        </p>
+                        <p class="media-row-text">Mentoring Management System for the FAITH Colleges Counselor's Office, developed under a Memorandum of Agreement. It centralizes mentoring with role-based dashboards, session scheduling, and dynamic QR-code attendance.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">ASP.NET</li><li class="chip">Microsoft SQL Server</li><li class="chip">HTML/CSS/JS</li><li class="chip">Figma</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/astramentoring.mp4" data-poster="images/astramentoring-poster.webp" data-title="AstraMentoring — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="web">
+                    <div class="media-row-thumb">
+                        <img src="images/starqueen.webp" alt="StarQueen PMTS admin dashboard" width="1200" height="675" loading="lazy">
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Client Project · Web App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">StarQueen PMTS</h3>
+                            <a href="https://starqueen-web.vercel.app/ADMIN/HTML/login.html" target="_blank" rel="noopener" class="text-link">View Project ↗</a>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Team Lead · team of 4</span>
+                            <span>Apr 2026</span>
+                            <span class="status status-live">Deployed</span>
+                        </p>
+                        <p class="media-row-text">Preventive Maintenance and Tracking System built under a Memorandum of Agreement for Starqueen Company in San Pedro, Darasa. It tracks truck maintenance, parts, and expenses, and alerts the admin when maintenance is overdue.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">ASP.NET</li><li class="chip">C#</li><li class="chip">Microsoft SQL Server</li><li class="chip">Azure</li><li class="chip">Vercel</li><li class="chip">HTML/CSS/JS</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="iot">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/garage-door.mp4" data-poster="images/garage-door-poster.webp" data-title="Automatic Garage Door Opener — Demo"
+                         aria-label="Play Automatic Garage Door Opener demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/garage-door-poster.webp" aria-hidden="true">
+                            <source src="videos/garage-door-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Team Project · IoT</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">Automatic Garage Door Opener</h3>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Project Lead · team of 3</span>
+                            <span>Apr 2026</span>
+                        </p>
+                        <p class="media-row-text">IoT-based automatic garage door opener. I led the project, combining hardware components with Arduino programming to build a working automated door mechanism.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">Arduino IDE</li><li class="chip">Arduino Programming</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/garage-door.mp4" data-poster="images/garage-door-poster.webp" data-title="Automatic Garage Door Opener — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="web">
+                    <div class="media-row-thumb">
+                        <img src="images/cinemax.webp" alt="CineMax Discover page — movie catalog" width="1200" height="675" loading="lazy">
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Team Project · Web App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">CineMax</h3>
+                            <a href="https://cinemax-omega-sepia.vercel.app/home/home.html" target="_blank" rel="noopener" class="text-link">View Project ↗</a>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role">Co-Lead · team of 6</span>
+                            <span>Nov 2025</span>
+                            <span class="status status-live">Deployed</span>
+                        </p>
+                        <p class="media-row-text">Movie discovery website that recommends films based on the user's mood and current weather. It integrates multiple APIs to show movie details, trailers, and where each film can be watched.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">HTML/CSS/JS</li><li class="chip">Figma</li><li class="chip">Vercel</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="web">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/newtoniq.mp4" data-poster="images/newtoniq-poster.webp" data-title="NewtonIQ — Demo"
+                         aria-label="Play NewtonIQ demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/newtoniq-poster.webp" aria-hidden="true">
+                            <source src="videos/newtoniq-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Team Project · Web App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">NewtonIQ</h3>
+                            <a href="https://newtons-iq.vercel.app" target="_blank" rel="noopener" class="text-link">View Project ↗</a>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Team Lead · team of 6</span>
+                            <span>2025</span>
+                            <span class="status status-live">Deployed</span>
+                        </p>
+                        <p class="media-row-text">Web-based Impulse and Momentum calculator that gives step-by-step solutions, tutorials, and lessons so users understand the formulas and how each answer is derived.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">HTML/CSS/JS</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/newtoniq.mp4" data-poster="images/newtoniq-poster.webp" data-title="NewtonIQ — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="mobile">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/bookmark.mp4" data-poster="images/bookmark-poster.webp" data-title="BookMark — Demo"
+                         aria-label="Play BookMark demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/bookmark-poster.webp" aria-hidden="true">
+                            <source src="videos/bookmark-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Team Project · Mobile App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">BookMark — Mobile Library Management System</h3>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Team Lead · Backend · team of 3</span>
+                            <span>May 2025</span>
+                        </p>
+                        <p class="media-row-text">Modern mobile app that simplifies library processes. I led the team and handled the backend, building the data layer on Supabase.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">React Native (Expo Go)</li><li class="chip">Supabase</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/bookmark.mp4" data-poster="images/bookmark-poster.webp" data-title="BookMark — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="mobile">
+                    <div class="media-row-thumb media-row-thumb-placeholder" aria-hidden="true">
+                        <i class="fa fa-mobile"></i>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">School Project · Mobile App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">CRUD Mobile App</h3>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role">Student Developer</span>
+                            <span>Mar 2025</span>
+                        </p>
+                        <p class="media-row-text">Basic mobile app implementing Create, Read, Update, and Delete operations, built to practice the fundamentals of mobile development.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">React Native (Expo Go)</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="desktop">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/kraby.mp4" data-poster="images/kraby-poster.webp" data-title="Kraby Kitchen — Demo"
+                         aria-label="Play Kraby Kitchen demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/kraby-poster.webp" aria-hidden="true">
+                            <source src="videos/kraby-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Team Project · Desktop App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">Kraby Kitchen</h3>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role project-role-lead"><i class="fa fa-users" aria-hidden="true"></i>Team Lead · Full-Stack Developer · team of 3</span>
+                            <span>Dec 2024</span>
+                            <span class="status">Local Deployment</span>
+                        </p>
+                        <p class="media-row-text">Desktop Restaurant Order Management System with account sign-up and login, menu ordering, and order records stored in a MariaDB database, built with full CRUD operations.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">Windows Forms (.NET)</li><li class="chip">Visual Studio</li><li class="chip">MariaDB</li><li class="chip">phpMyAdmin</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/kraby.mp4" data-poster="images/kraby-poster.webp" data-title="Kraby Kitchen — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+
+                <article class="media-row media-row-project" data-category="desktop">
+                    <div class="media-row-thumb media-row-thumb-video" onclick="openVideo(this)" role="button" tabindex="0"
+                         data-video="videos/basic-calculator.mp4" data-poster="images/basic-calculator-poster.webp" data-title="Basic Calculator — Demo"
+                         aria-label="Play Basic Calculator demo video">
+                        <video class="media-row-video" autoplay muted loop playsinline preload="metadata" poster="images/basic-calculator-poster.webp" aria-hidden="true">
+                            <source src="videos/basic-calculator-thumb.mp4" type="video/mp4">
+                        </video>
+                        <span class="play-badge" aria-hidden="true">▶</span>
+                    </div>
+                    <div class="media-row-body">
+                        <p class="eyebrow">Class Activity · Desktop App</p>
+                        <div class="media-row-head">
+                            <h3 class="media-row-title">Basic Calculator</h3>
+                        </div>
+                        <p class="project-meta">
+                            <span class="project-role">Student Developer</span>
+                        </p>
+                        <p class="media-row-text">Simple calculator built in Visual Studio as a class activity, performing basic arithmetic operations.</p>
+                        <ul class="chip-list chip-list-sm" aria-label="Technologies">
+                            <li class="chip">Visual Studio</li>
+                        </ul>
+                        <button type="button" class="text-link project-demo" onclick="openVideo(this)" data-video="videos/basic-calculator.mp4" data-poster="images/basic-calculator-poster.webp" data-title="Basic Calculator — Demo"><i class="fa fa-play-circle" aria-hidden="true"></i>Watch Demo</button>
+                    </div>
+                </article>
+            </div>
+
+            <p class="project-empty" hidden>No projects in this category yet.</p>
+        </section>
+
+        <!-- ============================================
              ABOUT
              ============================================ -->
-        <section class="about-wrapper" id="about">
+        <section class="section about-section" id="about">
+            <header class="section-head">
+                <p class="eyebrow">About me</p>
+                <h2 class="section-title section-title-lg">Experience &amp; Background</h2>
+            </header>
 
-            <nav class="about-jumpnav">
-                <a href="#education">Education</a>
-                <a href="#skills">Skills</a>
+            <nav class="about-jumpnav" aria-label="About subsections">
                 <a href="#experience">Experience</a>
+                <a href="#skills">Skills</a>
+                <a href="#education">Education</a>
                 <a href="#certifications">Certifications</a>
                 <a href="#hobbies">Hobbies</a>
             </nav>
 
-            <section class="edu-section" id="education">
-                <div class="edu-img">
-                    <img src="images/college.webp" alt="Daniela at FAITH Colleges" width="700" height="914" loading="lazy">
-                </div>
-                <div class="edu-text">
-                    <h2>Education</h2>
-                    <p class="edu-label">College</p>
-                    <p class="edu-desc">
-                        <b>First Asia Institute of Technology and Humanities (FAITH)</b><br>
-                        Tanauan City, Batangas<br>
-                        <b>College of Computing and Information Technology</b><br>
-                        <b>Bachelor of Science in Information Technology</b><br>
-                        2023 – Present<br>
-                        Consistent Dean's Lister
-                    </p>
-                </div>
-            </section>
-
-            <section class="edu-section reverse">
-                <div class="edu-img">
-                    <img src="images/shs.webp" alt="Daniela in senior high school" width="700" height="851" loading="lazy">
-                </div>
-                <div class="edu-text">
-                    <h2>Education</h2>
-                    <p class="edu-label">Senior High School</p>
-                    <p class="edu-desc">
-                        <b>First Asia Institute of Technology and Humanities</b><br>
-                        <b>Fidelis Senior High School</b><br>
-                        Tanauan City, Batangas<br>
-                        <b>Technical-Vocational-Livelihood Track</b><br>
-                        <b>Information and Communications Technology Strand</b><br>
-                        2021 – 2023<br>
-                        Class Secretary (2021-2022)<br>
-                        Class President (2022-2023)<br>
-                        With Honors (2021-2023)
-                    </p>
-                </div>
-            </section>
-
-            <section class="skills-section" id="skills">
-                <h2>Technical Skills</h2>
-                <div class="skills-grid">
-                    <ul>
-                        <li>Computer Hardware & Software Troubleshooting</li>
-                        <li>System Testing, Bug Identification & Fixing</li>
-                        <li>Version Control & Collaboration (Git, GitHub)</li>
-                        <li>UI/UX Design & Prototyping (Figma)</li>
-                        <li>Microsoft Office Suite & Google Workspace</li>
-                        <li>Web Development (HTML, CSS, JavaScript)</li>
-                        <li>Backend Development (ASP.NET, C#)</li>
-                    </ul>
-                    <ul>
-                        <li>Database Management (Microsoft SQL Server, MariaDB, Supabase)</li>
-                        <li>Cloud Deployment (Microsoft Azure, AWS EC2, Vercel)</li>
-                        <li>Basic Java and C++</li>
-                        <li>AI-Assisted Development (ChatGPT, Claude)</li>
-                        <li>Graphic Design &amp; Video Editing (Canva, CapCut)</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="experience-section" id="experience">
-                <h2>Professional Experience</h2>
+            <section class="subsection" id="experience">
+                <header class="section-head">
+                    <p class="eyebrow">Work</p>
+                    <h2 class="section-title">Professional Experience</h2>
+                </header>
 
                 <div class="exp-item">
                     <div class="exp-header">
@@ -237,105 +480,215 @@
                 </div>
             </section>
 
-            <section class="cert-section" id="certifications">
-                <div class="cert-section-head">
-                    <h2>Certifications</h2>
-                    <button type="button" class="cert-see-all-btn" onclick="toggleAllCertifications(this)">View All Certifications ↓</button>
+            <section class="subsection" id="skills">
+                <header class="section-head">
+                    <p class="eyebrow">What I use</p>
+                    <h2 class="section-title">Technical Skills</h2>
+                    <p class="section-lead">Technologies I've used hands-on in school and client projects. I'm comfortable with the fundamentals and still building depth in each.</p>
+                </header>
+                <p class="skill-key"><span class="chip">Used in projects</span><span class="chip chip-basic">Basic / still learning</span></p>
+                <dl class="skill-groups">
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Frontend &amp; mobile</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">HTML</li><li class="chip">CSS</li><li class="chip">JavaScript</li><li class="chip chip-basic">React (Vite)</li><li class="chip chip-basic">React Native (Expo Go)</li><li class="chip chip-basic">Progressive Web Apps</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Backend &amp; desktop</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">C#</li><li class="chip">ASP.NET</li><li class="chip">Windows Forms (.NET)</li><li class="chip chip-basic">Dapper</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Databases</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">Database design &amp; modeling</li><li class="chip">Database development &amp; management</li><li class="chip">Microsoft SQL Server</li><li class="chip">MariaDB</li><li class="chip chip-basic">SQLite</li><li class="chip">Supabase</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Cloud &amp; deployment</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip chip-basic">AWS fundamentals</li><li class="chip chip-basic">AWS EC2 deployment</li><li class="chip">Microsoft Azure</li><li class="chip">Vercel</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">IoT &amp; networking</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip chip-basic">IoT development (Arduino IDE)</li><li class="chip chip-basic">Networking fundamentals (Cisco Packet Tracer)</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">AI-assisted development</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">ChatGPT (OpenAI)</li><li class="chip">Codex (OpenAI)</li><li class="chip">Claude (Anthropic)</li><li class="chip">Claude Code (Anthropic)</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Other languages</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip chip-basic">Java</li><li class="chip chip-basic">C++</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Design</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">Figma (UI/UX &amp; prototyping)</li><li class="chip">Canva</li><li class="chip">CapCut</li>
+                        </ul></dd>
+                    </div>
+                    <div class="skill-group">
+                        <dt class="eyebrow eyebrow-muted">Tools &amp; practices</dt>
+                        <dd><ul class="chip-list">
+                            <li class="chip">Git &amp; GitHub</li><li class="chip">System testing &amp; bug fixing</li><li class="chip">Hardware &amp; software troubleshooting</li><li class="chip">Visual Studio</li><li class="chip">Microsoft Office</li><li class="chip">Google Workspace</li>
+                        </ul></dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="subsection" id="education">
+                <header class="section-head">
+                    <p class="eyebrow">Background</p>
+                    <h2 class="section-title">Education</h2>
+                </header>
+
+                <div class="edu-grid">
+                    <article class="edu-card">
+                        <div class="edu-card-head">
+                            <button type="button" class="zoomable" data-full="images/college-full.webp" data-caption="College — FAITH Colleges" aria-label="View college photo larger">
+                                <img src="images/college.webp" alt="Daniela at FAITH Colleges" width="700" height="914" loading="lazy">
+                                <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                            </button>
+                            <div>
+                                <h3 class="eyebrow">College</h3>
+                                <p class="edu-school">First Asia Institute of Technology and Humanities (FAITH)</p>
+                                <p class="edu-meta">Tanauan City, Batangas · 2023 – Present</p>
+                            </div>
+                        </div>
+                        <ul class="edu-details">
+                            <li><b>Bachelor of Science in Information Technology</b></li>
+                            <li>College of Computing and Information Technology</li>
+                            <li>Dean's Lister (4 semesters) · President's Lister (1 semester)</li>
+                        </ul>
+                    </article>
+
+                    <article class="edu-card">
+                        <div class="edu-card-head">
+                            <button type="button" class="zoomable" data-full="images/shs-full.webp" data-caption="Senior High School — FAITH Fidelis Senior High School" aria-label="View senior high school photo larger">
+                                <img src="images/shs.webp" alt="Daniela in senior high school" width="700" height="851" loading="lazy">
+                                <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                            </button>
+                            <div>
+                                <h3 class="eyebrow">Senior High School</h3>
+                                <p class="edu-school">FAITH Fidelis Senior High School</p>
+                                <p class="edu-meta">Tanauan City, Batangas · 2021 – 2023</p>
+                            </div>
+                        </div>
+                        <ul class="edu-details">
+                            <li><b>TVL Track — Information and Communications Technology Strand</b></li>
+                            <li>With Honors (2021-2023)</li>
+                            <li>Class Secretary (2021-2022) · Class President (2022-2023)</li>
+                        </ul>
+                    </article>
                 </div>
-                <div class="cert-list">
+            </section>
 
-                    <div class="cert-row">
-                        <a href="documents/CALABARZON Cybersecurity Caravan.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Attendance PDF">
-                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <div class="cert-row-body">
-                            <div class="cert-row-head">
-                                <h3>Certificate of Attendance</h3>
-                                <a href="documents/CALABARZON Cybersecurity Caravan.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+            <section class="subsection" id="certifications">
+                <header class="section-head section-head-split">
+                    <div>
+                        <p class="eyebrow">Credentials</p>
+                        <h2 class="section-title">Certifications</h2>
+                    </div>
+                    <button type="button" class="link-btn" onclick="toggleAllCertifications(this)" aria-expanded="false" aria-controls="cert-list">View All Certifications ↓</button>
+                </header>
+                <div class="media-list cert-list" id="cert-list">
+
+                    <div class="media-row media-row-cert">
+                        <button type="button" class="media-row-thumb zoomable" data-full="images/cert-cybersecurity-full.webp" data-caption="Certificate of Attendance — CALABARZON Cybersecurity Caravan" data-pdf="documents/CALABARZON Cybersecurity Caravan.pdf" aria-label="View Certificate of Attendance, CALABARZON Cybersecurity Caravan">
+                            <img src="images/cert-cybersecurity.webp" alt="Certificate of Attendance, CALABARZON Cybersecurity Caravan" width="400" height="225" loading="lazy">
+                            <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="media-row-body">
+                            <div class="media-row-head">
+                                <h3 class="media-row-title">Certificate of Attendance</h3>
+                                <button type="button" class="text-link" onclick="this.closest('.media-row').querySelector('.zoomable').click()">View Certificate</button>
                             </div>
-                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
-                            <p class="cert-row-sub">CALABARZON Cybersecurity Caravan</p>
+                            <p class="eyebrow">DICT Region IV-A · Apr 2024</p>
+                            <p class="media-row-text">CALABARZON Cybersecurity Caravan</p>
                         </div>
                     </div>
 
-                    <div class="cert-row">
-                        <a href="documents/DSDAP Caravan.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Participation, DSDAP Caravan PDF">
-                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <div class="cert-row-body">
-                            <div class="cert-row-head">
-                                <h3>Certificate of Participation</h3>
-                                <a href="documents/DSDAP Caravan.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+                    <div class="media-row media-row-cert">
+                        <button type="button" class="media-row-thumb zoomable" data-full="images/cert-dsdap-full.webp" data-caption="Certificate of Participation — DSDAP Caravan" data-pdf="documents/DSDAP Caravan.pdf" aria-label="View Certificate of Participation, DSDAP Caravan">
+                            <img src="images/cert-dsdap.webp" alt="Certificate of Participation, DSDAP Caravan" width="400" height="225" loading="lazy">
+                            <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="media-row-body">
+                            <div class="media-row-head">
+                                <h3 class="media-row-title">Certificate of Participation</h3>
+                                <button type="button" class="text-link" onclick="this.closest('.media-row').querySelector('.zoomable').click()">View Certificate</button>
                             </div>
-                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
-                            <p class="cert-row-sub">DSDAP Caravan</p>
+                            <p class="eyebrow">DICT Region IV-A · Apr 2024</p>
+                            <p class="media-row-text">DSDAP Caravan</p>
                         </div>
                     </div>
 
-                    <div class="cert-row">
-                        <a href="documents/EGOV Orientation.pdf" target="_blank" rel="noopener" class="cert-row-thumb" aria-label="Open Certificate of Participation, EGOVPh Orientation PDF">
-                            <svg class="cert-row-pdf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                                <path d="M15 2v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <div class="cert-row-body">
-                            <div class="cert-row-head">
-                                <h3>Certificate of Participation</h3>
-                                <a href="documents/EGOV Orientation.pdf" target="_blank" rel="noopener" class="cert-row-link">View PDF ↗</a>
+                    <div class="media-row media-row-cert">
+                        <button type="button" class="media-row-thumb zoomable" data-full="images/cert-egov-full.webp" data-caption="Certificate of Participation — EGOVPh Orientation" data-pdf="documents/EGOV Orientation.pdf" aria-label="View Certificate of Participation, EGOVPh Orientation">
+                            <img src="images/cert-egov.webp" alt="Certificate of Participation, EGOVPh Orientation" width="400" height="225" loading="lazy">
+                            <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="media-row-body">
+                            <div class="media-row-head">
+                                <h3 class="media-row-title">Certificate of Participation</h3>
+                                <button type="button" class="text-link" onclick="this.closest('.media-row').querySelector('.zoomable').click()">View Certificate</button>
                             </div>
-                            <p class="cert-row-badge">DICT Region IV-A · Apr 2024</p>
-                            <p class="cert-row-sub">EGOVPh Orientation</p>
+                            <p class="eyebrow">DICT Region IV-A · Apr 2024</p>
+                            <p class="media-row-text">EGOVPh Orientation</p>
                         </div>
                     </div>
 
-                    <div class="cert-row cert-extra">
-                        <div class="cert-row-thumb">
+                    <div class="media-row media-row-cert cert-extra">
+                        <button type="button" class="media-row-thumb zoomable" data-full="images/cert-sololearn-full.webp" data-caption="HTML Certificate — SoloLearn" aria-label="View HTML Certificate larger">
                             <img src="images/cert-sololearn.webp" alt="HTML Certificate — SoloLearn" loading="lazy">
-                        </div>
-                        <div class="cert-row-body">
-                            <div class="cert-row-head">
-                                <h3>HTML Certificate</h3>
+                            <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="media-row-body">
+                            <div class="media-row-head">
+                                <h3 class="media-row-title">HTML Certificate</h3>
+                                <button type="button" class="text-link" onclick="this.closest('.media-row').querySelector('.zoomable').click()">View Certificate</button>
                             </div>
-                            <p class="cert-row-badge">SoloLearn · Self-directed</p>
-                            <p class="cert-row-sub">Mobile App — Web Development Learning</p>
+                            <p class="eyebrow">SoloLearn · Self-directed</p>
+                            <p class="media-row-text">Mobile App — Web Development Learning</p>
                         </div>
                     </div>
 
-                    <div class="cert-row cert-extra">
-                        <div class="cert-row-thumb">
+                    <div class="media-row media-row-cert cert-extra">
+                        <button type="button" class="media-row-thumb zoomable" data-full="images/cert-work-immersion-full.webp" data-caption="Certificate of Completion — IT Support Intern (Work Immersion)" aria-label="View Certificate of Completion larger">
                             <img src="images/cert-work-immersion.webp" alt="Certificate of Completion — IT Support Intern Work Immersion" loading="lazy">
-                        </div>
-                        <div class="cert-row-body">
-                            <div class="cert-row-head">
-                                <h3>Certificate of Completion</h3>
+                            <i class="fa fa-search-plus zoomable-icon" aria-hidden="true"></i>
+                        </button>
+                        <div class="media-row-body">
+                            <div class="media-row-head">
+                                <h3 class="media-row-title">Certificate of Completion</h3>
+                                <button type="button" class="text-link" onclick="this.closest('.media-row').querySelector('.zoomable').click()">View Certificate</button>
                             </div>
-                            <p class="cert-row-badge">FAITH Colleges MIS Dept. · Feb 2023</p>
-                            <p class="cert-row-sub">IT Support Intern — Work Immersion</p>
+                            <p class="eyebrow">FAITH Colleges MIS Dept. · Feb 2023</p>
+                            <p class="media-row-text">IT Support Intern — Work Immersion</p>
                         </div>
                     </div>
 
                 </div>
             </section>
 
-            <section class="hobbies-section" id="hobbies">
-                <h2>Hobbies</h2>
-                <p class="hobdes">
-                    Outside of coursework and projects, I enjoy documenting everyday moments through photography
-                    and videography — a habit that doubles as hands-on practice with the same editing tools I use
-                    professionally, Canva and CapCut. I like refining raw footage into something clean and
-                    presentable before sharing it, which keeps my eye for detail sharp.
-                </p>
-                <p class="hobdec2">
-                    When I'm not creating, I recharge with a good show, an iced coffee, or catching up with close
-                    friends and family over food — small rituals that help me stay balanced and bring fresh energy
-                    back to my work.
+            <section class="subsection" id="hobbies">
+                <header class="section-head">
+                    <p class="eyebrow">Outside class</p>
+                    <h2 class="section-title">Hobbies</h2>
+                </header>
+                <p class="section-lead">
+                    I enjoy photography and videography — capturing everyday moments and editing them in Canva and
+                    CapCut, which keeps my eye for detail sharp. To recharge, I like a good show, an iced coffee,
+                    or a meal with friends and family.
                 </p>
 
                 <div class="hobby-gallery">
@@ -353,16 +706,16 @@
                             <img src="images/hobby-4.webp" alt="Hobby photo 4" loading="lazy">
                         </div>
                         <!-- duplicated for a seamless looping scroll -->
-                        <div class="hobby-box" aria-hidden="true">
+                        <div class="hobby-box hobby-box-clone" aria-hidden="true">
                             <img src="images/hobby-1.webp" alt="" loading="lazy">
                         </div>
-                        <div class="hobby-box" aria-hidden="true">
+                        <div class="hobby-box hobby-box-clone" aria-hidden="true">
                             <img src="images/hobby-2.webp" alt="" loading="lazy">
                         </div>
-                        <div class="hobby-box" aria-hidden="true">
+                        <div class="hobby-box hobby-box-clone" aria-hidden="true">
                             <img src="images/hobby-3.webp" alt="" loading="lazy">
                         </div>
-                        <div class="hobby-box" aria-hidden="true">
+                        <div class="hobby-box hobby-box-clone" aria-hidden="true">
                             <img src="images/hobby-4.webp" alt="" loading="lazy">
                         </div>
                     </div>
@@ -372,188 +725,186 @@
         </section>
 
         <!-- ============================================
-             PROJECTS
-             ============================================ -->
-        <section class="Projects-page" id="projects">
-            <div class="projects">
-                <p class="proj-eyebrow">PORTFOLIO</p>
-                <h2 id="proj">Projects</h2>
-                <p class="projdes">
-                    A selection of projects I've worked on, from full-stack web applications to database-driven systems and UI/UX design.
-                    On most of them I served as Team Lead and Lead Developer, guiding the team and owning the technical implementation.
-                </p>
-            </div>
-
-            <div class="proj-container">
-                <div class="proj-row">
-                    <div class="proj-row-thumb">
-                        <img src="images/astramentoring.webp" alt="AstraMentoring dashboard" width="1200" height="675" loading="lazy">
-                    </div>
-                    <div class="proj-row-body">
-                        <div class="proj-row-head">
-                            <h3>AstraMentoring</h3>
-                        </div>
-                        <p class="proj-row-role">Capstone Project · Team Lead · 2026 · Ongoing</p>
-                        <p class="proj-row-text">Web-based Mentoring Management System for FAITH Colleges, developed under a Memorandum of Agreement. It centralizes mentoring operations with role-based dashboards, session scheduling, and dynamic QR-code attendance monitoring.</p>
-                        <p class="proj-row-tags">ASP.NET · Microsoft SQL Server · HTML/CSS/JS · Figma</p>
-                    </div>
-                </div>
-
-                <div class="proj-row">
-                    <div class="proj-row-thumb">
-                        <img src="images/starqueen.webp" alt="StarQueen PMTS admin dashboard" width="1200" height="675" loading="lazy">
-                    </div>
-                    <div class="proj-row-body">
-                        <div class="proj-row-head">
-                            <h3>StarQueen PMTS</h3>
-                            <a href="https://starqueen-web.vercel.app/ADMIN/HTML/login.html" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
-                        </div>
-                        <p class="proj-row-role">Team Lead · 2026 · Deployed</p>
-                        <p class="proj-row-text">Preventive Maintenance and Tracking System built under a Memorandum of Agreement for Starqueen Company, a private organization in San Pedro, Darasa. It monitors vehicle maintenance, tracks parts and expenses, and sends automated alerts for overdue maintenance.</p>
-                        <p class="proj-row-tags">HTML/CSS/JS · ASP.NET · C# · Microsoft SQL Server · Azure · Vercel</p>
-                    </div>
-                </div>
-
-                <div class="proj-row">
-                    <div class="proj-row-thumb">
-                        <img src="images/cinemax.webp" alt="CineMax Discover page — movie catalog" width="1200" height="675" loading="lazy">
-                    </div>
-                    <div class="proj-row-body">
-                        <div class="proj-row-head">
-                            <h3>CineMax</h3>
-                            <a href="https://cinemax-omega-sepia.vercel.app/home/home.html" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
-                        </div>
-                        <p class="proj-row-role">Team Project · 2025 · Deployed</p>
-                        <p class="proj-row-text">Interactive movie discovery website that recommends films based on the user's mood and current weather. It integrates multiple APIs to show movie details, trailers, and links to the platforms where each film can be watched.</p>
-                        <p class="proj-row-tags">HTML/CSS/JS · Figma · Vercel</p>
-                    </div>
-                </div>
-
-                <!-- NewtonIQ -->
-                <div class="proj-row">
-                    <div class="proj-row-thumb proj-row-thumb-video" onclick="openProjectModal('newtoniq-modal')" role="button" tabindex="0" aria-label="Play NewtonIQ preview video">
-                        <video class="proj-row-video-el" autoplay muted loop playsinline preload="metadata" poster="images/newtoniq-poster.webp" aria-hidden="true">
-                            <source src="videos/newtoniq-thumb.mp4" type="video/mp4">
-                        </video>
-                        <span class="proj-row-play-btn">▶</span>
-                    </div>
-                    <div class="proj-row-body">
-                        <div class="proj-row-head">
-                            <h3>NewtonIQ</h3>
-                            <a href="https://newtons-iq.vercel.app" target="_blank" rel="noopener" class="proj-row-link">View Project ↗</a>
-                        </div>
-                        <p class="proj-row-role">Team Lead · 2025 · Deployed</p>
-                        <p class="proj-row-text">Interactive web-based calculator for Impulse and Momentum that provides step-by-step solutions, tutorials, and lessons to help users understand the formulas, computation process, and how each answer is derived.</p>
-                        <p class="proj-row-tags">HTML/CSS/JS</p>
-                    </div>
-                </div>
-
-                <!-- Kraby Kitchen -->
-                <div class="proj-row">
-                    <div class="proj-row-thumb proj-row-thumb-video" onclick="openProjectModal('kraby-modal')" role="button" tabindex="0" aria-label="Play Kraby Kitchen preview video">
-                        <video class="proj-row-video-el" autoplay muted loop playsinline preload="metadata" poster="images/kraby-poster.webp" aria-hidden="true">
-                            <source src="videos/kraby-thumb.mp4" type="video/mp4">
-                        </video>
-                        <span class="proj-row-play-btn">▶</span>
-                    </div>
-                    <div class="proj-row-body">
-                        <div class="proj-row-head">
-                            <h3>Kraby Kitchen</h3>
-                        </div>
-                        <p class="proj-row-role">Team Lead · 2024 · Local Deployment</p>
-                        <p class="proj-row-text">Full-stack Restaurant Order Management System with full CRUD and database integration for managing menu items and customer orders, covering browsing, order placement, and admin workflows.</p>
-                        <p class="proj-row-tags">ASP.NET · MariaDB</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================
              CONTACT
              ============================================ -->
-        <section class="contact-page" id="contact">
-            <div class="contact-header">
-                <h2 class="description">Let's Work Together</h2>
-                <p class="note">I'm open to OJT and junior developer opportunities. The quickest way to reach me is by email, and I'm happy to share more about any of my projects.</p>
-            </div>
+        <section class="section contact-section" id="contact">
+            <header class="section-head">
+                <p class="eyebrow">Get in touch</p>
+                <h2 class="section-title section-title-lg">Let's Work Together</h2>
+                <p class="section-lead">I'm open to OJT and junior developer opportunities. The quickest way to reach me is by email, and I'm happy to share more about any of my projects.</p>
+            </header>
+
+            <p class="availability">
+                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                <span>Available for OJT starting <b>December 1, 2026</b> or earlier · approx. <b>600 hours</b> required</span>
+            </p>
 
             <div class="contact-grid">
                 <a class="contact-card" href="mailto:barrandadaniela@gmail.com">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                    <span class="contact-card-label">Email</span>
+                    <span class="eyebrow eyebrow-muted">Email</span>
                     <span class="contact-card-value">barrandadaniela@gmail.com</span>
                 </a>
                 <a class="contact-card" href="https://www.linkedin.com/in/daniela-nicole-barranda-4a1281239/" target="_blank" rel="noopener">
                     <i class="fa fa-linkedin" aria-hidden="true"></i>
-                    <span class="contact-card-label">LinkedIn</span>
+                    <span class="eyebrow eyebrow-muted">LinkedIn</span>
                     <span class="contact-card-value">Daniela Nicole Barranda ↗</span>
                 </a>
                 <a class="contact-card" href="https://github.com/DanielaBarranda" target="_blank" rel="noopener">
                     <i class="fa fa-github" aria-hidden="true"></i>
-                    <span class="contact-card-label">GitHub</span>
+                    <span class="eyebrow eyebrow-muted">GitHub</span>
                     <span class="contact-card-value">@DanielaBarranda ↗</span>
                 </a>
                 <a class="contact-card" href="documents/CV.pdf" download>
                     <i class="fa fa-file-text" aria-hidden="true"></i>
-                    <span class="contact-card-label">Curriculum Vitae</span>
+                    <span class="eyebrow eyebrow-muted">Curriculum Vitae</span>
                     <span class="contact-card-value">Download CV (PDF)</span>
                 </a>
             </div>
 
-            <p class="contact-location">Based in Batangas, Philippines</p>
+            <p class="eyebrow eyebrow-muted contact-location">Based in Batangas, Philippines</p>
         </section>
+
+        <footer class="site-footer">
+            <p>© 2026 Daniela Nicole Barranda</p>
+            <a href="#home" class="text-link">Back to top ↑</a>
+        </footer>
 
     </main>
 
-    <div class="proj-modal-overlay" id="newtoniq-modal" onclick="closeProjectModal(event, 'newtoniq-modal')">
-        <div class="proj-modal-box" onclick="event.stopPropagation()">
-            <button class="proj-modal-close" onclick="closeProjectModal(null, 'newtoniq-modal')" aria-label="Close preview">&times;</button>
-            <video class="proj-modal-video" controls preload="none" poster="images/newtoniq-poster.webp">
-                <source src="videos/newtoniq.mp4" type="video/mp4">
+    <!-- ============================================
+         PROJECT PREVIEW MODALS
+         ============================================ -->
+    <div class="modal-overlay" id="video-modal" onclick="closeModal('video-modal')">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="video-modal-title" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeModal('video-modal')" aria-label="Close video">&times;</button>
+            <video class="modal-video" controls preload="none" playsinline>
                 Your browser doesn't support embedded videos.
             </video>
-            <h3 class="proj-modal-title">NewtonIQ — Preview</h3>
+            <h3 class="modal-title" id="video-modal-title"></h3>
         </div>
     </div>
 
-    <div class="proj-modal-overlay" id="kraby-modal" onclick="closeProjectModal(event, 'kraby-modal')">
-        <div class="proj-modal-box" onclick="event.stopPropagation()">
-            <button class="proj-modal-close" onclick="closeProjectModal(null, 'kraby-modal')" aria-label="Close preview">&times;</button>
-            <video class="proj-modal-video" controls preload="none" poster="images/kraby-poster.webp">
-                <source src="videos/kraby.mp4" type="video/mp4">
-                Your browser doesn't support embedded videos.
-            </video>
-            <h3 class="proj-modal-title">Kraby Kitchen — Preview</h3>
-        </div>
+    <div class="modal-overlay" id="lightbox" onclick="closeModal('lightbox')">
+        <figure class="modal-box lightbox-box" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeModal('lightbox')" aria-label="Close image">&times;</button>
+            <img class="lightbox-img" src="" alt="">
+            <figcaption class="lightbox-caption"><span class="modal-title" id="lightbox-caption"></span><a class="text-link lightbox-pdf" href="#" target="_blank" rel="noopener" hidden>Open PDF ↗</a></figcaption>
+        </figure>
     </div>
 
     <script>
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
         // ---- Certifications: show a preview, reveal the rest on demand ----
         function toggleAllCertifications(btn) {
-            const list = document.querySelector('.cert-list');
+            const list = document.getElementById('cert-list');
             const expanded = list.classList.toggle('expanded');
             btn.textContent = expanded ? 'Show Fewer Certifications ↑' : 'View All Certifications ↓';
+            btn.setAttribute('aria-expanded', String(expanded));
         }
 
-        // ---- Project preview modals ----
-        function openProjectModal(id) {
+        // ---- Projects: filter by category ----
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const filterables = document.querySelectorAll('#projects [data-category]');
+        const projectEmpty = document.querySelector('.project-empty');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                filterButtons.forEach(b => {
+                    const on = b === btn;
+                    b.classList.toggle('active', on);
+                    b.setAttribute('aria-pressed', String(on));
+                });
+                let shown = 0;
+                filterables.forEach(item => {
+                    const match = filter === 'all' || item.dataset.category === filter;
+                    item.hidden = !match;
+                    if (match) shown++;
+                });
+                projectEmpty.hidden = shown > 0;
+            });
+        });
+
+        // ---- Modals: project videos + photo lightbox (dialog with focus trap) ----
+        let lastFocused = null;
+
+        function getFocusable(container) {
+            return [...container.querySelectorAll('button, [href], video[controls], [tabindex]:not([tabindex="-1"])')]
+                .filter(el => !el.hasAttribute('disabled'));
+        }
+
+        function openModal(id) {
             const modal = document.getElementById(id);
+            lastFocused = document.activeElement;
             modal.classList.add('active');
-            const video = modal.querySelector('video');
-            if (video) video.play();
             document.body.style.overflow = 'hidden';
+            modal.querySelector('.modal-close').focus();
+            const video = modal.querySelector('video');
+            if (video && !reducedMotion.matches) video.play().catch(() => {});
         }
 
-        function closeProjectModal(event, id) {
+        function closeModal(id) {
             const modal = document.getElementById(id);
+            if (!modal.classList.contains('active')) return;
             modal.classList.remove('active');
             const video = modal.querySelector('video');
             if (video) { video.pause(); video.currentTime = 0; }
             document.body.style.overflow = '';
+            if (lastFocused) lastFocused.focus();
         }
 
+        // Project demos play in one shared video dialog. Each trigger carries
+        // data-video, data-poster and data-title; the file only downloads on open.
+        const videoModal = document.getElementById('video-modal');
+        const videoPlayer = videoModal.querySelector('.modal-video');
+        const videoTitle = document.getElementById('video-modal-title');
+
+        function openVideo(trigger) {
+            if (videoPlayer.getAttribute('src') !== trigger.dataset.video) {
+                videoPlayer.src = trigger.dataset.video;
+            }
+            videoPlayer.poster = trigger.dataset.poster || '';
+            videoTitle.textContent = trigger.dataset.title || '';
+            openModal('video-modal');
+            videoPlayer.play().catch(() => {});
+        }
+
+        // Photos and image certificates open full size in the shared lightbox.
+        const lightboxImg = document.querySelector('.lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxPdf = document.querySelector('.lightbox-pdf');
+
+        document.querySelectorAll('.zoomable').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const thumb = btn.querySelector('img');
+                lightboxImg.src = btn.dataset.full || thumb.src;
+                lightboxImg.alt = thumb.alt;
+                lightboxCaption.textContent = btn.dataset.caption || thumb.alt;
+                // PDF certificates also offer the original file.
+                lightboxPdf.hidden = !btn.dataset.pdf;
+                if (btn.dataset.pdf) lightboxPdf.href = btn.dataset.pdf;
+                openModal('lightbox');
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const open = document.querySelector('.modal-overlay.active');
+            if (!open) return;
+            if (e.key === 'Escape') {
+                closeModal(open.id);
+            } else if (e.key === 'Tab') {
+                const items = getFocusable(open);
+                const first = items[0];
+                const last = items[items.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        });
+
         // Video thumbnails are role="button": let keyboard users open them too.
-        document.querySelectorAll('.proj-row-thumb-video').forEach(thumb => {
+        document.querySelectorAll('.media-row-thumb-video').forEach(thumb => {
             thumb.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -562,18 +913,18 @@
             });
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.proj-modal-overlay.active').forEach(m => {
-                    closeProjectModal(null, m.id);
-                });
-            }
-        });
+        // Respect "reduce motion": no autoplaying preview loops.
+        function applyMotionPreference() {
+            document.querySelectorAll('.media-row-video').forEach(v => {
+                if (reducedMotion.matches) { v.removeAttribute('autoplay'); v.pause(); }
+                else { v.play().catch(() => {}); }
+            });
+        }
+        reducedMotion.addEventListener('change', applyMotionPreference);
+        applyMotionPreference();
 
         // Picks whichever section currently fills the most visible area in the
-        // viewport — robust to sections much shorter or taller than the screen,
-        // unlike a fixed "N px from the top" line which gets stuck on short
-        // sections once a taller one starts dominating the view.
+        // viewport — robust to sections much shorter or taller than the screen.
         function getDominantSection(sections) {
             const viewportHeight = window.innerHeight;
             let best = null;
@@ -592,21 +943,17 @@
 
         // ---- About sub-nav: highlight current subsection while scrolling ----
         const jumpLinks = document.querySelectorAll('.about-jumpnav a');
-        const subSections = [...jumpLinks].map(link =>
-            document.querySelector(link.getAttribute('href'))
-        );
+        const subSections = [...jumpLinks].map(link => document.querySelector(link.getAttribute('href')));
 
         function highlightCurrentSubsection() {
             if (!subSections.length) return;
             const current = getDominantSection(subSections);
             const currentId = current ? current.id : subSections[0].id;
-
-            jumpLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
-            });
-
-            document.querySelectorAll('.sidebar-subnav a').forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+            document.querySelectorAll('.about-jumpnav a, .sidebar-subnav a').forEach(link => {
+                const isCurrent = link.getAttribute('href') === '#' + currentId;
+                link.classList.toggle('active', isCurrent);
+                if (isCurrent) link.setAttribute('aria-current', 'location');
+                else link.removeAttribute('aria-current');
             });
         }
 
@@ -618,25 +965,50 @@
         function highlightCurrentSection() {
             const current = getDominantSection(navSections);
             const currentId = current ? current.id : navSections[0].id;
-
             sidebarLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('data-section') === currentId);
+                const isCurrent = link.getAttribute('data-section') === currentId;
+                link.classList.toggle('active', isCurrent);
+                if (isCurrent) link.setAttribute('aria-current', 'location');
+                else link.removeAttribute('aria-current');
             });
-
             aboutJumpnav.classList.toggle('visible', currentId === 'about');
         }
 
+        // ---- Desktop sidebar: collapse to an icon rail ----
+        const SIDEBAR_KEY = 'dbarranda-sidebar';
+        const collapseBtn = document.querySelector('.sidebar-collapse-btn');
+
+        function syncSidebarButton() {
+            const collapsed = document.documentElement.classList.contains('sidebar-collapsed');
+            collapseBtn.setAttribute('aria-expanded', String(!collapsed));
+            collapseBtn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+        }
+
+        function toggleSidebarCollapse() {
+            const collapsed = document.documentElement.classList.toggle('sidebar-collapsed');
+            try { localStorage.setItem(SIDEBAR_KEY, collapsed ? 'collapsed' : 'expanded'); } catch (e) {}
+            syncSidebarButton();
+        }
+
+        syncSidebarButton();
+
         // ---- Mobile hamburger menu ----
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+
+        function setMobileMenu(open) {
+            document.querySelector('.sidebar').classList.toggle('open', open);
+            document.querySelector('.mobile-menu-backdrop').classList.toggle('open', open);
+            document.body.classList.toggle('menu-open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+            menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+
         function toggleMobileMenu() {
-            document.querySelector('.sidebar').classList.toggle('open');
-            document.querySelector('.mobile-menu-backdrop').classList.toggle('open');
-            document.body.classList.toggle('menu-open');
+            setMobileMenu(!document.querySelector('.sidebar').classList.contains('open'));
         }
 
         function closeMobileMenu() {
-            document.querySelector('.sidebar').classList.remove('open');
-            document.querySelector('.mobile-menu-backdrop').classList.remove('open');
-            document.body.classList.remove('menu-open');
+            setMobileMenu(false);
         }
 
         document.querySelectorAll('.sidebar-nav a, .sidebar-footer a').forEach(link => {
@@ -648,7 +1020,7 @@
             highlightCurrentSubsection();
         }
 
-        window.addEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
 
         // ---- Theme toggle (system / light / dark) ----
@@ -662,7 +1034,9 @@
                 document.documentElement.removeAttribute('data-theme');
             }
             themeButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-theme-choice') === choice);
+                const isActive = btn.getAttribute('data-theme-choice') === choice;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', String(isActive));
             });
             try { localStorage.setItem(THEME_KEY, choice); } catch (e) {}
         }

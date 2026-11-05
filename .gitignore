@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Original, uncompressed demo recordings (too large for GitHub; the site
+# uses the compressed copies in videos/)
+videos/originals/
+
 # Vercel CLI local project link
 .vercel/
 
