@@ -1501,6 +1501,11 @@ video {
     margin-right: var(--space-1);
 }
 
+/* Phone-only copy of the MOA button, placed right under the note. */
+.ojt-moa-btn {
+    display: none;
+}
+
 .ojt-list {
     padding-left: var(--space-5);
     font-size: var(--text-sm);
@@ -1947,6 +1952,17 @@ video {
     .project-links .btn,
     .ojt-actions .btn {
         width: 100%;
+    }
+
+    /* MOA button moves up under the MOA note; the bottom copy hides. */
+    .ojt-moa-btn {
+        display: flex;
+        width: 100%;
+        margin-top: var(--space-4);
+    }
+
+    .ojt-moa-main {
+        display: none;
     }
 
     /* Certificates: thumbnail beside a clean title / issuer / name / link stack. */
