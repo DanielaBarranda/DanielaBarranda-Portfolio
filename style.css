@@ -298,6 +298,15 @@ video {
     text-decoration: underline;
 }
 
+/* Inline Font Awesome icons that trail link and button labels. */
+.text-link .fa,
+.link-btn .fa,
+.btn .fa-external-link,
+.contact-card-value .fa {
+    font-size: 0.85em;
+    margin-left: 2px;
+}
+
 /* ---- Media row (projects + certifications) ---- */
 
 .media-list {
@@ -1103,6 +1112,9 @@ video {
 }
 
 .social-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     color: var(--ink);
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
@@ -1112,6 +1124,11 @@ video {
 
 .social-links a:hover {
     color: var(--rose-deep);
+}
+
+.social-links .fa {
+    font-size: var(--text-md);
+    color: var(--rose);
 }
 
 .hero-buttons {
@@ -1409,6 +1426,114 @@ video {
 
 
 /* ============================================
+   OJT
+   ============================================ */
+
+.ojt-facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--rose-pale);
+}
+
+.ojt-fact .eyebrow {
+    margin-bottom: var(--space-1);
+}
+
+.ojt-fact dd {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    color: var(--ink);
+}
+
+.ojt-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--space-4);
+}
+
+.ojt-card {
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+}
+
+.ojt-card > .eyebrow {
+    margin-bottom: var(--space-4);
+}
+
+.ojt-note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--ink-muted);
+}
+
+.ojt-card-interests {
+    display: flex;
+    flex-direction: column;
+}
+
+.ojt-moa-note {
+    margin-top: auto;
+    padding: var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--rose-pale);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--ink);
+}
+
+/* Keep a gap above the note when the card is stacked (no spare height). */
+.ojt-card-interests .ojt-note {
+    margin-bottom: var(--space-6);
+}
+
+.ojt-moa-note .eyebrow {
+    margin-bottom: var(--space-2);
+}
+
+.ojt-moa-note .fa {
+    margin-right: var(--space-1);
+}
+
+.ojt-list {
+    padding-left: var(--space-5);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-muted);
+}
+
+.ojt-list li + li {
+    margin-top: var(--space-2);
+}
+
+.ojt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+}
+
+.ojt-actions .fa {
+    margin-right: var(--space-1);
+}
+
+@media (max-width: 860px) {
+    .ojt-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ojt-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
    CONTACT
    ============================================ */
 
@@ -1455,7 +1580,7 @@ video {
     transform: translateY(-2px);
 }
 
-.contact-card i {
+.contact-card > i {
     font-size: var(--text-xl);
     color: var(--rose);
     margin-bottom: var(--space-2);
@@ -1786,8 +1911,107 @@ video {
         height: 88px;
     }
 
+    /* Filters scroll sideways in one row instead of orphaning a pill. */
+    .project-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        margin-right: calc(-1 * var(--gutter));
+        padding-right: var(--gutter);
+    }
+
+    .project-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        flex: 0 0 auto;
+    }
+
+    /* Meta items wrap freely; separators would dangle at line starts. */
+    .project-meta > span + span::before {
+        content: none;
+    }
+
+    .project-meta {
+        gap: var(--space-2) var(--space-4);
+    }
+
+    /* Primary actions go full width so paired buttons line up. */
+    .project-links,
+    .ojt-actions {
+        flex-direction: column;
+    }
+
+    .project-links .btn,
+    .ojt-actions .btn {
+        width: 100%;
+    }
+
+    /* Certificates: thumbnail beside a clean title / issuer / name / link stack. */
+    .media-row-cert {
+        align-items: flex-start;
+        gap: var(--space-4);
+    }
+
+    .media-row-cert .media-row-thumb {
+        width: 96px;
+        height: 62px;
+    }
+
+    .media-row-cert .media-row-body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    .media-row-cert .media-row-head {
+        display: contents;
+    }
+
+    .media-row-cert .media-row-title {
+        font-size: var(--text-md);
+        line-height: var(--leading-tight);
+    }
+
+    .media-row-cert .eyebrow {
+        margin-bottom: 0;
+    }
+
+    .media-row-cert .text-link {
+        order: 1;
+        align-self: flex-start;
+        margin-top: var(--space-1);
+    }
+
+    /* Contact cards become compact rows: icon left, label + value right. */
     .contact-grid {
         grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .contact-card {
+        display: grid;
+        grid-template-columns: 40px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        column-gap: var(--space-4);
+        align-items: center;
+        padding: var(--space-4) var(--space-5);
+    }
+
+    .contact-card > i {
+        grid-row: 1 / span 2;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .availability {
+        align-items: flex-start;
+    }
+
+    .ojt-facts {
+        padding: var(--space-5);
     }
 
     .hobby-box {
