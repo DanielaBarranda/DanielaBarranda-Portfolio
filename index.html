@@ -925,9 +925,9 @@
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
         // ---- Contact form: sends through Web3Forms (free) ----
-        // Paste the access key Web3Forms emails you below. Until then, the form
-        // opens the visitor's email app with the message already filled in.
-        const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+        // Public Web3Forms access key: it can only deliver messages to Daniela's inbox.
+        // If it is ever cleared, the form falls back to opening the visitor's email app.
+        const WEB3FORMS_KEY = 'b5eeca18-9b5c-432f-81a3-21ed02a65566';
         const CONTACT_EMAIL = 'barrandadaniela@gmail.com';
 
         (function initContactForm() {
