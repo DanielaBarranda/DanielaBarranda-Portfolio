@@ -834,6 +834,62 @@
                 </a>
             </div>
 
+            <form class="contact-form" id="contact-form" novalidate>
+                <div class="form-head">
+                    <h3 class="form-title">Send me a message</h3>
+                    <p class="form-sub">It goes straight to my inbox. I usually reply within a day or two.</p>
+                </div>
+
+                <fieldset class="form-field topic-field">
+                    <legend class="form-label">What's on your mind? <span class="form-optional">(optional)</span></legend>
+                    <div class="topic-chips">
+                        <label class="topic-chip"><input type="radio" name="topic" value="Just saying hi"><span>Just saying hi</span></label>
+                        <label class="topic-chip"><input type="radio" name="topic" value="OJT / career opportunity"><span>OJT / career opportunity</span></label>
+                        <label class="topic-chip"><input type="radio" name="topic" value="Project or collaboration"><span>Project or collaboration</span></label>
+                        <label class="topic-chip"><input type="radio" name="topic" value="Recommendation or feedback"><span>Recommendation or feedback</span></label>
+                        <label class="topic-chip"><input type="radio" name="topic" value="Something else"><span>Something else</span></label>
+                    </div>
+                </fieldset>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="form-label" for="cf-name">Name <span class="form-required" aria-hidden="true">*</span></label>
+                        <input class="form-input" id="cf-name" name="name" type="text" autocomplete="name" placeholder="Enter your name" maxlength="100" required aria-describedby="cf-name-err">
+                        <p class="form-error" id="cf-name-err"></p>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label" for="cf-email">Email <span class="form-required" aria-hidden="true">*</span></label>
+                        <input class="form-input" id="cf-email" name="email" type="email" autocomplete="email" placeholder="Enter your email address" maxlength="150" required aria-describedby="cf-email-err">
+                        <p class="form-error" id="cf-email-err"></p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="cf-phone">Phone <span class="form-optional">(optional)</span></label>
+                    <div class="form-input-icon">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <input class="form-input" id="cf-phone" name="phone" type="tel" autocomplete="tel" placeholder="Enter your phone number" maxlength="30">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="cf-message">Message <span class="form-required" aria-hidden="true">*</span></label>
+                    <textarea class="form-input form-textarea" id="cf-message" name="message" rows="5" placeholder="Write your message here..." maxlength="5000" required aria-describedby="cf-message-err cf-count"></textarea>
+                    <div class="form-meta">
+                        <p class="form-error" id="cf-message-err"></p>
+                        <span class="form-count" id="cf-count" aria-live="polite">0/5000</span>
+                    </div>
+                </div>
+
+                <!-- Spam trap: hidden from people, bots fill it in. -->
+                <input type="checkbox" name="botcheck" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                <button type="submit" class="btn btn-block form-submit">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i><span>Send Message</span>
+                </button>
+                <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
+            </form>
+
             <p class="eyebrow eyebrow-muted contact-location">Based in Batangas, Philippines</p>
         </section>
 
@@ -867,6 +923,119 @@
 
     <script>
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        // ---- Contact form: sends through Web3Forms (free) ----
+        // Paste the access key Web3Forms emails you below. Until then, the form
+        // opens the visitor's email app with the message already filled in.
+        const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+        const CONTACT_EMAIL = 'barrandadaniela@gmail.com';
+
+        (function initContactForm() {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+            const message = form.querySelector('#cf-message');
+            const count = form.querySelector('#cf-count');
+            const status = form.querySelector('#cf-status');
+            const submit = form.querySelector('.form-submit');
+            const submitLabel = submit.querySelector('span');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            const keyReady = WEB3FORMS_KEY && !WEB3FORMS_KEY.startsWith('YOUR_');
+
+            message.addEventListener('input', () => {
+                count.textContent = message.value.length + '/5000';
+            });
+
+            // Let a selected topic chip be clicked again to clear it (the field is optional).
+            form.querySelectorAll('.topic-chip input').forEach(radio => {
+                radio.addEventListener('pointerdown', () => { radio.dataset.wasChecked = String(radio.checked); });
+                radio.addEventListener('click', () => {
+                    if (radio.dataset.wasChecked === 'true') radio.checked = false;
+                    radio.dataset.wasChecked = 'false';
+                });
+            });
+
+            function setError(field, text) {
+                const err = form.querySelector('#' + field.id + '-err');
+                field.setAttribute('aria-invalid', text ? 'true' : 'false');
+                if (err) err.textContent = text;
+                return !text;
+            }
+
+            function validate() {
+                const name = form.querySelector('#cf-name');
+                const email = form.querySelector('#cf-email');
+                const checks = [
+                    setError(name, name.value.trim() ? '' : 'Please enter your name.'),
+                    setError(email, !email.value.trim() ? 'Please enter your email address.'
+                        : emailPattern.test(email.value.trim()) ? '' : 'Please enter a valid email address.'),
+                    setError(message, message.value.trim() ? '' : 'Please write a message.'),
+                ];
+                const firstBad = form.querySelector('[aria-invalid="true"]');
+                if (firstBad) firstBad.focus();
+                return checks.every(Boolean);
+            }
+
+            // Clear a field's error as soon as the visitor fixes it.
+            form.querySelectorAll('[required]').forEach(field => {
+                field.addEventListener('input', () => {
+                    if (field.getAttribute('aria-invalid') === 'true') setError(field, '');
+                });
+            });
+
+            function setStatus(text, kind) {
+                status.textContent = text;
+                status.className = 'form-status' + (kind ? ' is-' + kind : '');
+            }
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                setStatus('', '');
+                const fields = form.elements;
+                if (fields.namedItem('botcheck').checked) return;
+                if (!validate()) return;
+
+                const data = {
+                    topic: form.querySelector('input[name="topic"]:checked')?.value || 'Not specified',
+                    name: fields.namedItem('name').value.trim(),
+                    email: fields.namedItem('email').value.trim(),
+                    phone: fields.namedItem('phone').value.trim() || 'Not provided',
+                    message: message.value.trim(),
+                };
+
+                if (!keyReady) {
+                    const body = `${data.message}\n\n— ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone}`;
+                    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Portfolio message: ' + data.topic)}&body=${encodeURIComponent(body)}`;
+                    setStatus('Your email app should open with the message ready to send.', 'success');
+                    return;
+                }
+
+                submit.disabled = true;
+                submitLabel.textContent = 'Sending...';
+                try {
+                    const res = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                        body: JSON.stringify({
+                            access_key: WEB3FORMS_KEY,
+                            subject: `Portfolio message: ${data.topic} — from ${data.name}`,
+                            from_name: 'Daniela Barranda Portfolio',
+                            replyto: data.email,
+                            ...data,
+                        }),
+                    });
+                    const result = await res.json().catch(() => ({}));
+                    if (!res.ok || !result.success) throw new Error(result.message || 'Request failed');
+                    form.reset();
+                    count.textContent = '0/5000';
+                    setStatus(`Thanks, ${data.name}! Your message was sent. I'll get back to you soon.`, 'success');
+                } catch (err) {
+                    setStatus(`Sorry, the message didn't go through. Please try again, or email me at ${CONTACT_EMAIL}.`, 'error');
+                } finally {
+                    submit.disabled = false;
+                    submitLabel.textContent = 'Send Message';
+                }
+            });
+        })();
 
         // ---- Certifications: show a preview, reveal the rest on demand ----
         function toggleAllCertifications(btn) {
