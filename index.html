@@ -1015,12 +1015,23 @@
                     const res = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                        // Keys below become the labels in the notification email, in this order.
                         body: JSON.stringify({
                             access_key: WEB3FORMS_KEY,
-                            subject: `Portfolio message: ${data.topic} — from ${data.name}`,
+                            subject: data.topic === 'Not specified'
+                                ? `New Portfolio Inquiry from ${data.name}`
+                                : `New Portfolio Inquiry (${data.topic}) from ${data.name}`,
                             from_name: 'Daniela Barranda Portfolio',
                             replyto: data.email,
-                            ...data,
+                            'Inquiry Type': data.topic,
+                            'Full Name': data.name,
+                            'Email Address': data.email,
+                            'Phone Number': data.phone,
+                            'Message': data.message,
+                            'Submitted On': new Date().toLocaleString('en-US', {
+                                timeZone: 'Asia/Manila', dateStyle: 'long', timeStyle: 'short',
+                            }) + ' (PHT)',
+                            'Sent From': 'Contact form, danielabarranda.vercel.app',
                         }),
                     });
                     const result = await res.json().catch(() => ({}));
